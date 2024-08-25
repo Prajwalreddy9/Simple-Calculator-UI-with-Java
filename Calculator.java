@@ -50,17 +50,32 @@ public class Calculator extends JFrame implements ActionListener {
             operator = "";
             num1 = num2 = result = 0;
         } else if (command.equals("=")) {
-            num2 = Double.parseDouble(display.getText());
-            switch (operator) {
-                case "+": result = num1 + num2; break;
-                case "-": result = num1 - num2; break;
-                case "*": result = num1 * num2; break;
-                case "/": result = num1 / num2; break;
+            try {
+                num2 = Double.parseDouble(display.getText());
+                switch (operator) {
+                    case "+": result = num1 + num2; break;
+                    case "-": result = num1 - num2; break;
+                    case "*": result = num1 * num2; break;
+                    case "/": 
+                        if (num2 == 0) {
+                            display.setText("Error");
+                            return;
+                        } 
+                        result = num1 / num2; 
+                        break;
+                }
+                display.setText(String.format("%.5f", result));
+            } catch (NumberFormatException ex) {
+                display.setText("Error");
             }
-            display.setText("" + result);
         } else {
             operator = command;
-            num1 = Double.parseDouble(display.getText());
+            try {
+                num1 = Double.parseDouble(display.getText());
+            } catch (NumberFormatException ex) {
+                display.setText("Error");
+                return;
+            }
             display.setText("");
         }
     }
